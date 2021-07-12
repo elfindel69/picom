@@ -1,7 +1,8 @@
 package com.hb.picom;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+/*import java.time.LocalDateTime;
+import java.time.LocalTime;*/
+import java.util.Scanner;
 
 import com.hb.picom.pojos.Advertisment;
 import com.hb.picom.pojos.Area;
@@ -9,20 +10,22 @@ import com.hb.picom.pojos.BusStop;
 import com.hb.picom.pojos.City;
 import com.hb.picom.pojos.Client;
 import com.hb.picom.pojos.Country;
-import com.hb.picom.pojos.Invoice;
 import com.hb.picom.pojos.TimeSlot;
-import com.hb.picom.services.AdService;
-import com.hb.picom.services.CityService;
-import com.hb.picom.services.ClientService;
-import com.hb.picom.services.InvoiceService;
+import com.hb.picom.services.Service;
+import com.hb.picom.services.impl.AdServiceImpl;
+import com.hb.picom.services.impl.AreaServiceImpl;
+import com.hb.picom.services.impl.BusStopServiceImpl;
+import com.hb.picom.services.impl.CityServiceImpl;
+import com.hb.picom.services.impl.ClientServiceImpl;
+import com.hb.picom.services.impl.TimeSlotServiceImpl;
 
 public class PiComMain {
-
+	private static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		CityService cities = new CityService();
-		ClientService clients = new ClientService();
-		AdService ads = new AdService();
+		/*Service<City> cities = new CityServiceImpl();
+		Service<Client> clients = new ClientServiceImpl();
+		Service<Advertisment> ads = new AdServiceImpl();
 		Client client = new Client(1, "Toto", "Delgado", "toto@delgado.fr", "frfrr");
 		client.setCompanyAddress("44, av. Paul Krüger");
 		City city = new City("Villeurbanne", "69100", Country.France);
@@ -58,7 +61,27 @@ public class PiComMain {
 		System.out.println("vat price: "+vatPrice);
 		System.out.println("net price: "+netPrice);
 		Invoice invoice = new Invoice(1, LocalDateTime.now(), "Coca Cola", "115150", "44, av. Paul Krüger, 69100 Villeurbanne", price, vatPrice, netPrice);
-		System.out.println(invoice);
+		System.out.println(invoice);*/
+		
+		Service<Area> areaService = new AreaServiceImpl();
+		Service<BusStop> busStopService = new BusStopServiceImpl();
+		Service<TimeSlot> timeSlotService = new TimeSlotServiceImpl();
+		AdminConsole.showConsole(sc, areaService, busStopService, timeSlotService);
+		
+		Service<City> cities = new CityServiceImpl();
+		Service<Client>  clients = new ClientServiceImpl();
+		City city = new City("Villeurbanne", "69100", Country.France);
+		City city2 = new City("Lyon 2", "69002", Country.France);
+		cities.addItem(city);
+		cities.addItem(city2);
+		
+		ClientConsole.showConsole(sc, clients, cities);
+		
+		Service<Advertisment> adService = new AdServiceImpl();
+		AdConsole.showConsole(sc, clients.getItem(0), adService, areaService, timeSlotService);
+		
+		sc.close();
+		
 	}
 
 }

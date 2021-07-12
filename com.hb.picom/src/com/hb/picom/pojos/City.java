@@ -44,6 +44,10 @@ public class City {
 		sb.append("city country: "+country );
 		return sb.toString();
 	}
+	public void setCountry(String name) {
+		this.country = Country.valueOf(name);
+		
+	}
 	
 
 }

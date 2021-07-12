@@ -157,9 +157,24 @@ public class Client {
 		
 	}
 	public void showAds() {
+		int idx = 0;
 		for (Advertisment advertisment : ads) {
+			System.out.println(idx+":");
 			System.out.println(advertisment);
+			idx++;
 		}
 	}
+	public void addAd(Advertisment ad) {
+		ads.add(ad);
+		
+	}
 	
+	public void setAd(int idx, Advertisment ad) {
+		ads.set(idx, ad);
+	}
+	
+	public void deleteAd(int idx) {
+		ads.remove(idx);
+		
+	}
 }

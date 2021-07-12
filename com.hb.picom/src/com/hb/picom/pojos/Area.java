@@ -56,9 +56,20 @@ public class Area {
 	}
 	
 	public void showBusStops() {
+		int idx = 0;
 		for (BusStop busStop : busStops) {
+			System.out.println(idx+":");
 			System.out.println(busStop);
+			idx++;
 		}
+	}
+	public void setBusStop(int id, BusStop busStop) {
+		busStops.set(id, busStop);
+		
+	}
+	public void deleteBusStop(int id) {
+		busStops.remove(id);
+		
 	}
 	
 }

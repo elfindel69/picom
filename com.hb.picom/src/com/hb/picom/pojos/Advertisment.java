@@ -1,5 +1,6 @@
 package com.hb.picom.pojos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,8 +13,8 @@ public class Advertisment {
 	private String description;
 	private String urlImage;
 	private String htmlText;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private LocalDateTime creationDate = LocalDateTime.now();
 	private List<Area> areas = new ArrayList<Area>();
 	private List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
@@ -54,16 +55,16 @@ public class Advertisment {
 	public void setHtmlText(String htmlText) {
 		this.htmlText = htmlText;
 	}
-	public LocalDateTime getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(LocalDateTime startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
-	public LocalDateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(LocalDateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 	
@@ -97,7 +98,8 @@ public class Advertisment {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		sb.append("title: "+title+",\n");
 		
 		if(isActive) {
@@ -121,21 +123,27 @@ public class Advertisment {
 			sb.append("end date:\n"+FORMATTER.format(endDate)+",\n");
 		}
 		
-		sb.append("creation date:\n"+FORMATTER.format(creationDate));
+		sb.append("creation date:\n"+FORMATTER_TIME.format(creationDate));
 	
 		return sb.toString();
 	}
 	
 	public void showAreas() {
+		int idx = 0;
 		for (Area area : areas) {
+			System.out.println(idx+":");
 			System.out.println(area);
+			idx++;
 		}
 		
 	}
 	
 	public void showTimeSlots() {
+		int idx = 0;
 		for (TimeSlot timeSlot : timeSlots) {
+			System.out.println(idx+":");
 			System.out.println(timeSlot);
+			idx++;
 		}
 		
 	}
