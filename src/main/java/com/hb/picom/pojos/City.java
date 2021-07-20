@@ -4,7 +4,14 @@ public class City {
 	private String name;
 	private String zipCode;
 	private Country country;
+	private int id;
 	
+	public int getId() {
+		return this.id;
+	}
+	public void setID(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -48,6 +55,7 @@ public class City {
 		this.country = Country.valueOf(name);
 		
 	}
+	
 	
 
 }

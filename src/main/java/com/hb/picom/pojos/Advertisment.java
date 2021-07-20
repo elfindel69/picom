@@ -1,6 +1,5 @@
 package com.hb.picom.pojos;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,14 +12,18 @@ public class Advertisment {
 	private String description;
 	private String urlImage;
 	private String htmlText;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
 	private LocalDateTime creationDate = LocalDateTime.now();
 	private List<Area> areas = new ArrayList<Area>();
 	private List<TimeSlot> timeSlots = new ArrayList<TimeSlot>();
 	
-	public int getId() {
+	public int area() {
 		return id;
+	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return this.id;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -55,16 +58,16 @@ public class Advertisment {
 	public void setHtmlText(String htmlText) {
 		this.htmlText = htmlText;
 	}
-	public LocalDate getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
+	public void setStartDate(LocalDateTime localDateTime) {
+		this.startDate = localDateTime;
 	}
-	public LocalDate getEndDate() {
+	public LocalDateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(LocalDate endDate) {
+	public void setEndDate(LocalDateTime endDate) {
 		this.endDate = endDate;
 	}
 	
@@ -99,7 +102,6 @@ public class Advertisment {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-		final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		sb.append("title: "+title+",\n");
 		
 		if(isActive) {
@@ -116,11 +118,11 @@ public class Advertisment {
 		}
 		
 		if(startDate != null) {
-			sb.append("start date:\n"+FORMATTER.format(startDate)+",\n");
+			sb.append("start date:\n"+FORMATTER_TIME.format(startDate)+",\n");
 		}
 		
 		if(endDate != null) {
-			sb.append("end date:\n"+FORMATTER.format(endDate)+",\n");
+			sb.append("end date:\n"+FORMATTER_TIME.format(endDate)+",\n");
 		}
 		
 		sb.append("creation date:\n"+FORMATTER_TIME.format(creationDate));
@@ -147,5 +149,6 @@ public class Advertisment {
 		}
 		
 	}
+	
 	
 }

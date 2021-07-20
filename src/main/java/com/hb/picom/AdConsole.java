@@ -1,6 +1,6 @@
 package com.hb.picom;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import com.hb.picom.pojos.Advertisment;
@@ -103,11 +103,11 @@ public class AdConsole {
 		ad.setUrlImage(urlImage);
 		
 		System.out.println("saisir une date de début:");
-		LocalDate startDate = LocalDate.parse(sc.nextLine());
+		LocalDateTime startDate = LocalDateTime.parse(sc.nextLine());
 		ad.setStartDate(startDate);
 		
 		System.out.println("saisir une date de fin:");
-		LocalDate endDate = LocalDate.parse(sc.nextLine());
+		LocalDateTime endDate = LocalDateTime.parse(sc.nextLine());
 		ad.setEndDate(endDate);
 		
 		char quit = 'y';

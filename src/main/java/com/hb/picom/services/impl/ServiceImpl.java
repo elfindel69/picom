@@ -13,17 +13,13 @@ public abstract class ServiceImpl<T> implements Service<T> {
 		return items;
 	}
 	
-	public T getItem(int id) {
-		return items.get(id);
-	}
+	public abstract T getItem(int id) ;
 	
 	public void addItem(T item) {
 		items.add(item);
 	}
 	
-	public void deleteItem(int id) {
-		items.remove(id);
-	}
+	public abstract void deleteItem(int id) ;
 	
 	public void updateItem(int id, T item) {
 		items.set(id, item);
