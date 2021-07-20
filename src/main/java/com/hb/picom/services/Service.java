@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface Service<T> {
 	
+	public int createItem(T item);
+	
 	public List<T> getItems();
 	
 	public T getItem(int id) ;
@@ -12,8 +14,10 @@ public interface Service<T> {
 	
 	public void deleteItem(int id);
 	
-	public void updateItem(int id, T item) ;
+	public int updateItem(int id, T item) ;
 
 	public void showItems();
+	
+	public void showItem(int id);
 
 }

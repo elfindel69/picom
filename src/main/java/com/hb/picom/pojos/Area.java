@@ -49,6 +49,7 @@ public class Area {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("id: "+id+",\n");
 		sb.append("name: "+name+",\n");
 		sb.append("base price: "+basePrice);
 		

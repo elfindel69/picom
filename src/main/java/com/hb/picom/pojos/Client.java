@@ -11,6 +11,7 @@ public class Client {
 	private String lastName;
 	private String email;
 	private String password;
+	private String phone;
 	private String creditCardNb;
 	private String expirationDate;
 	private String cVVCode;
@@ -20,6 +21,7 @@ public class Client {
 	private City companyCity;
 	private LocalDateTime creationDate = LocalDateTime.now();
 	private List<Advertisment> ads = new ArrayList<Advertisment>();
+	
 	
 	public int getId() {
 		return id;
@@ -39,6 +41,14 @@ public class Client {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public LocalDateTime getCreationDate() {
+		return this.creationDate;
+		
+	}
+	public void setCreationDate(LocalDateTime localDateTime) {
+		this.creationDate = localDateTime;
+		
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -50,6 +60,12 @@ public class Client {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getPhone() {
+		return this.phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public String getCreditCardNb() {
 		return creditCardNb;
@@ -63,10 +79,10 @@ public class Client {
 	public void setExpirationDate(String expirationDate) {
 		this.expirationDate = expirationDate;
 	}
-	public String getcVVCode() {
+	public String getCVVCode() {
 		return cVVCode;
 	}
-	public void setcVVCode(String cVVCode) {
+	public void setCVVCode(String cVVCode) {
 		this.cVVCode = cVVCode;
 	}
 	public String getCompanyName() {
@@ -119,6 +135,7 @@ public class Client {
 	public String toString() {
 		final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		StringBuilder sb = new StringBuilder();
+		sb.append("id: "+id+",\n");
 		sb.append("first name: "+firstName+",\n");
 		sb.append("last name: "+lastName+",\n");
 		sb.append("email: "+email+",\n");
@@ -177,4 +194,6 @@ public class Client {
 		ads.remove(idx);
 		
 	}
+	
+	
 }

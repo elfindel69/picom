@@ -45,7 +45,7 @@ public class BusStop {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		
+		sb.append("id: "+id+",\n");
 		sb.append("name: "+name+",\n");
 		sb.append("IP address:\n"+iPAddress+",\n");
 		sb.append("GPS: "+gps);

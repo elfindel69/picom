@@ -46,6 +46,7 @@ public class City {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("id: "+id+",\n");
 		sb.append("city name: "+name+",\n" );
 		sb.append("city zip code: "+zipCode+",\n" );
 		sb.append("city country: "+country );

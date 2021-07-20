@@ -102,6 +102,7 @@ public class Advertisment {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		sb.append("id: "+id+",\n");
 		sb.append("title: "+title+",\n");
 		
 		if(isActive) {

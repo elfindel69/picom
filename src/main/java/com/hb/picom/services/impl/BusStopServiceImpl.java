@@ -4,6 +4,12 @@ import com.hb.picom.pojos.BusStop;
 
 public class BusStopServiceImpl extends ServiceImpl<BusStop> {
 	@Override
+	public int createItem(BusStop item) {
+		items.add(item);
+		return items.indexOf(item);
+	}
+	
+	@Override
 	public BusStop getItem(int id) {
 		for (BusStop busStop : items) {
 			if(busStop.getId() == id) {
@@ -18,6 +24,16 @@ public class BusStopServiceImpl extends ServiceImpl<BusStop> {
 		for (BusStop busStop : items) {
 			if(busStop.getId() == id) {
 				items.remove(busStop);
+			}
+		}
+		
+	}
+	
+	@Override
+	public void showItem(int id) {
+		for (BusStop advertisment : items) {
+			if(advertisment.getId() == id) {
+				System.out.println(advertisment);
 			}
 		}
 		

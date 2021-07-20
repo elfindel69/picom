@@ -4,6 +4,12 @@ import com.hb.picom.pojos.City;
 
 public class CityServiceImpl extends ServiceImpl<City> {
 	@Override
+	public int createItem(City item) {
+		items.add(item);
+		return items.indexOf(item);
+	}
+	
+	@Override
 	public City getItem(int id) {
 		for (City city : items) {
 			if(city.getId() == id) {
@@ -18,6 +24,16 @@ public class CityServiceImpl extends ServiceImpl<City> {
 		for (City city : items) {
 			if(city.getId() == id) {
 				items.remove(city);
+			}
+		}
+		
+	}
+
+	@Override
+	public void showItem(int id) {
+		for (City advertisment : items) {
+			if(advertisment.getId() == id) {
+				System.out.println(advertisment);
 			}
 		}
 		

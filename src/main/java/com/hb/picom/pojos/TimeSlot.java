@@ -49,6 +49,7 @@ public class TimeSlot {
 	public String toString() {
 		final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 		StringBuilder sb = new StringBuilder();
+		sb.append("id: "+id+",\n");
 		sb.append("start time: "+FORMATTER.format(startTime)+",\n");
 		sb.append("end time: "+FORMATTER.format(endTime)+",\n");
 		sb.append("price: "+price);
