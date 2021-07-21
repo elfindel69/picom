@@ -1,118 +1,39 @@
 package com.hb.picom.services.jdbc;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 
-import com.hb.picom.pojos.City;
-import com.hb.picom.pojos.Client;
+import com.hb.picom.pojos.InvoiceItem;
 
-public class ClientServiceJDBC extends ServiceJDBC<Client> {
+public class InvoiceItemServiceJDBC extends ServiceJDBC<InvoiceItem> {
 
-	public ClientServiceJDBC(Connection connection) {
+	public InvoiceItemServiceJDBC(Connection connection) {
 		super(connection);
-		initList();
-	}
-	
-	@Override
-	protected void initList() {
-		String query = "SELECT * FROM client";
-		 try {
-			
-			ps = connection.prepareStatement(query);
-			rs = ps.executeQuery();
-			
-			while(rs.next()){
-				 Client client = new Client();
-				 int id = rs.getInt("client_id");
-				 client.setId(id);
-				 String firstName = rs.getString("client_first_name");
-				 client.setFirstName(firstName);
-				 String lastName = rs.getString("client_last_name");
-				 client.setLastName(lastName);
-				 Timestamp creationDate = rs.getTimestamp("client_creation_date");
-				 client.setCreationDate(creationDate.toLocalDateTime());
-				 String email = rs.getString("client_email");
-				 client.setEmail(email);
-				 String password = rs.getString("client_password");
-				 client.setPassword(password);
-				 String phone = rs.getString("client_phone");
-				 client.setPhone(phone);
-				 String creditCard = rs.getString("client_credit_card");
-				 client.setCreditCardNb(creditCard);
-				 String expirationDate = rs.getString("client_expiration_date");
-				 client.setExpirationDate(expirationDate);
-				 String cvvCode = rs.getString("client_CVV_code");
-				 client.setCVVCode(cvvCode);
-				 String companyName = rs.getString("client_company_name");
-				 client.setCompanyName(companyName);
-				 String companySiret = rs.getString("client_company_SIRET");
-				 client.setCompanySIRET(companySiret);
-				 String companyAddress = rs.getString("client_address");
-				 client.setCompanyAddress(companyAddress);
-			 
-				 String query2 = "SELECT city.*, country.country_name FROM client "+
-						 "INNER JOIN city ON client.id_city = city.city_id INNER JOIN country "
-						 + "ON city.id_country = country.country_id"
-						 + " WHERE client.client_id = ?";
-				 PreparedStatement ps2 = connection.prepareStatement(query2);
-				 ps2.setInt(1, id);
-				 
-				 ResultSet rs2 = ps2.executeQuery();
-				 
-				 if(rs2.next()) {
-					 City city = new City();
-					 int id2 = rs2.getInt("city_id");
-					 city.setID(id2);
-					 String cityName = rs2.getString("city_name");
-					 city.setName(cityName);
-					 String zipCode = rs2.getString("city_zip_code");
-					 city.setZipCode(zipCode);
-					 String countryName = rs2.getString("country_name");
-					 city.setCountry(countryName);
-					 client.setCompanyCity(city);
-				 }
-				items.add(client);
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
-	public int createItem(Client item) {
-		Client testClient = getItem(item.getId());
-		if(testClient == null) {
+	public int createItem(InvoiceItem item) {
+		InvoiceItem testInvoiceItem = getItem(item.getId());
+		if(testInvoiceItem == null) {
 			int createdRow = 0;
 			try {
-				 String query = "INSERT INTO client("
-				 		+ "client_first_name, "
-				 		+ "client_last_name, "
-				 		+ "client_email, "
-				 		+ "client_password, "
-				 		+ "client_phone, "
-				 		+ "client_company_name, "
-				 		+ "client_address, "
-				 		+ "id_city)"
-				 		+ " VALUES(?,?,?,?,?,?,?,?)";
+				 String query = "INSERT INTO invoice_item("
+				 		+ "id_invoice, "
+				 		+ "invoice_item_name,"
+				 		+ "invoice_item_price,"
+				 		+ "invoice_item_quantity)"
+				 		+ " VALUES(?,?,?,?)";
 				 ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 				 
-				 ps.setString(1, item.getFirstName());
-				 ps.setString(2, item.getLastName());
-				 ps.setString(3, item.getEmail());
-				 ps.setString(4, item.getPassword());
-				 ps.setString(5, item.getPhone());
-				 ps.setString(6, item.getCompanyName());
-				 ps.setString(7, item.getCompanyAddress());
-				 ps.setInt(8, item.getCompanyCity().getId());
-				
+				 ps.setInt(1, item.getInvoiceId());
+				 ps.setString(2, item.getName());
+				 ps.setDouble(3, item.getPrice());
+				 
 				 int row = ps.executeUpdate();
+				 
 				if(row == 1) {
 					try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
 			            if (generatedKeys.next()) {
@@ -123,7 +44,6 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			                throw new SQLException("Creating user failed, no ID obtained.");
 			            }
 			        }
-					
 					items.add(item);
 				   
 				}
@@ -132,8 +52,6 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			     System.out.println("SQLException: " + ex.getMessage());
 			     System.out.println("SQLState: " + ex.getSQLState());
 			     System.out.println("VendorError: " + ex.getErrorCode());
-			     
-			     
 			 }
 			 finally {
 
@@ -167,35 +85,66 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			}
 			return createdRow;
 		}
-		else{
+		else {
 			return updateItem(item.getId(), item);
 		}
 	}
 
 	@Override
-	public Client getItem(int id) {
-		for (Client client : items) {
-			if(client.getId() == id) {
-				return client;
-			}
+	protected void initList() {
+		String query = "SELECT * FROM invoice_item ";
+		 try {
+			
+			ps = connection.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				 InvoiceItem item = new InvoiceItem();
+				
+				 int id = rs.getInt("nvoice_item_id");
+				 item.setId(id);
+				 int invoiceId = rs.getInt("id_invoice");
+				 item.setInvoiceId(invoiceId);
+				 String name = rs.getString("invoice_item_name");
+				 item.setName(name);
+				 double price = rs.getDouble("invoice_item_price");
+				 item.setPrice(price);
+				 int quantity = rs.getInt("invoice_item_quantity");
+				 item.setQuantity(quantity);
+				 
+				 
+				 items.add(item);
+			 }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return null;
 		
 	}
 
 	@Override
+	public InvoiceItem getItem(int id) {
+		for (InvoiceItem item : items) {
+			if(item.getId() == id) {
+				return item;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public void deleteItem(int id) {
-		Client itemClient = null;
-		for (Client client: items) {
-			if(client.getId() == id) {
-				itemClient = client;
+		InvoiceItem itemInvoice = null;
+		for (InvoiceItem item: items) {
+			if(item.getId() == id) {
+				itemInvoice = item;
 				break;
 			}
 		}
-		if(itemClient != null) {
-			items.remove(itemClient);
+		if(itemInvoice != null) {
+			items.remove(itemInvoice);
 			try {
-				 String query = "DELETE FROM client WHERE client_id = ?";
+				 String query = "DELETE FROM invoice_item WHERE invoice_item_id = ?";
 				 ps = connection.prepareStatement(query);
 				 
 				 ps.setInt(1, id);
@@ -237,34 +186,30 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			    }
 			}
 		}
+		
 	}
-	
+
 	@Override
-	public int updateItem(int id, Client item) {
+	public int updateItem(int id, InvoiceItem item) {
 		int idx = 0;
-		for (Client client: items) {
-			if(client.getId() == id) {
+		for (InvoiceItem invoiceItem: items) {
+			if(invoiceItem.getId() == id) {
 				items.set(idx, item);
 				try {
-					 String query = "UPDATE client SET"
-					 		+ " client_first_name = ?,"
-					 		+ " client_last_name = ?,"
-					 		+ " client_email = ?,"
-					 		+ " client_phone = ?,"
-					 		+ " client_company_name = ?,"
-					 		+ " client_address = ?,"
-					 		+ " id_city = ?"
-					 		+ " WHERE client_id = ?";
+					 String query = "UPDATE invoice_item SET"
+					 		+ " id_invoice = ?,"
+					 		+ " invoice_item_name = ?,"
+					 		+ " invoice_item_price = ?,"
+					 		+ " invoice_item_quantity = ?"
+					 		+ " WHERE bus_stop_id = ?";
 					 ps = connection.prepareStatement(query);
 					 
-					 ps.setString(1, item.getFirstName());
-					 ps.setString(2, item.getLastName());
-					 ps.setString(3, item.getEmail());
-					 ps.setString(4, item.getPhone());
-					 ps.setString(5, item.getCompanyName());
-					 ps.setString(6, item.getCompanyAddress());
-					 ps.setInt(7, item.getCompanyCity().getId());
-					 ps.setInt(8, item.getId());
+					 ps.setInt(1, item.getInvoiceId());
+					 ps.setString(2, item.getName());
+					 ps.setDouble(3, item.getPrice());
+					 ps.setInt(4, item.getQuantity());
+					 
+					 ps.setInt(5, item.getId());
 					 
 					 int row = ps.executeUpdate();
 
@@ -306,17 +251,13 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			idx++;
 		}
 		return id;
-		
 	}
 
 	@Override
 	public void showItem(int id) {
-		 try {
-			 String query = "SELECT client_id,client_first_name,client_last_name,client_email,"
-			 		+ "client_phone,client_company_name,client_address,city_name,country_name"
-			 		+ " FROM client INNER JOIN city ON client.id_city = city.city_id "
-			 		+ "INNER JOIN country ON city.id_country= country.country_id"
-			 		+ " WHERE client.client_id = ?";
+		try {
+			 String query = "SELECT * FROM invoice_item "
+						+" WHERE invoice_item_id = ?";
 			 ps = connection.prepareStatement(query);
 			 ps.setInt(1, id);
 			 
@@ -346,11 +287,6 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 		     System.out.println("VendorError: " + ex.getErrorCode());
 		 }
 		 finally {
-		    // it is a good idea to release
-		    // resources in a finally{} block
-		    // in reverse-order of their creation
-		    // if they are no-longer needed
-
 		    if (rs != null) {
 		        try {
 		            rs.close();
@@ -367,6 +303,7 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 		        ps = null;
 		    }
 		}
+		
 	}
 
 }

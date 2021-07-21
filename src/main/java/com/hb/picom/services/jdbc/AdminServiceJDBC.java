@@ -1,7 +1,10 @@
 package com.hb.picom.services.jdbc;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.hb.picom.pojos.Admin;
 
@@ -18,10 +21,10 @@ public class AdminServiceJDBC extends ServiceJDBC<Admin> {
 			int createdRow = 0;
 			try {
 				 String query = "INSERT INTO admin("
-				 		+ "city_login, "
-				 		+ "city_password)"
+				 		+ "admin_login, "
+				 		+ "admin_password)"
 				 		+ " VALUES(?,?)";
-				 ps = connection.prepareStatement(query);
+				 ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 				 
 				 ps.setString(1, item.getLogin());
 				 ps.setString(2, item.getPassword());
@@ -29,12 +32,15 @@ public class AdminServiceJDBC extends ServiceJDBC<Admin> {
 				 int row = ps.executeUpdate();
 				 
 				if(row == 1) {
-					stmt = connection.createStatement();
-					 rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-					 if(rs.next()) {
-						 createdRow = rs.getInt(1);
-						 System.out.println("ligne insérée: "+createdRow);
-					 }
+					try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+			            if (generatedKeys.next()) {
+			            	createdRow = generatedKeys.getInt(1);
+			            	item.setId(createdRow);
+			            }
+			            else {
+			                throw new SQLException("Creating user failed, no ID obtained.");
+			            }
+			        }
 					items.add(item);
 				   
 				}
@@ -110,25 +116,176 @@ public class AdminServiceJDBC extends ServiceJDBC<Admin> {
 
 	@Override
 	public Admin getItem(int id) {
-		// TODO Auto-generated method stub
+		for (Admin admin : items) {
+			if(admin.getId() == id) {
+				return admin;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public void deleteItem(int id) {
-		// TODO Auto-generated method stub
+		Admin itemAdmin = null;
+		for (Admin admin: items) {
+			if(admin.getId() == id) {
+				itemAdmin = admin;
+				break;
+			}
+		}
+		if(itemAdmin != null) {
+			items.remove(itemAdmin);
+			try {
+				 String query = "DELETE FROM admin WHERE admin_id = ?";
+				 ps = connection.prepareStatement(query);
+				 
+				 ps.setInt(1, id);
+				
+				 int row = ps.executeUpdate();
+
+	             // rows affected
+				 if(row  == 1) {
+					  System.out.println("ligne supprimée: "+id);
+				 }
+				 
+				
+			 } catch (SQLException ex) {
+			     // handle any errors
+			     System.out.println("SQLException: " + ex.getMessage());
+			     System.out.println("SQLState: " + ex.getSQLState());
+			     System.out.println("VendorError: " + ex.getErrorCode());
+			 }
+			 finally {
+			    if (rs != null) {
+			        try {
+			            rs.close();
+			        } catch (SQLException sqlEx) { } // ignore
+
+			        rs = null;
+			    }
+
+			    if (ps != null) {
+			        try {
+			            ps.close();
+			        } catch (SQLException sqlEx) { } // ignore
+
+			        ps = null;
+			    }
+			}
+		}
 		
 	}
 
 	@Override
 	public int updateItem(int id, Admin item) {
-		// TODO Auto-generated method stub
-		return 0;
+		int idx = 0;
+		for (Admin admin: items) {
+			if(admin.getId() == id) {
+				items.set(idx, item);
+				try {
+					
+					 String query = "UPDATE admin SET"
+					 		+ " admin_login = ?,"
+					 		+ " admin_password = ?"
+					 		+ " WHERE admin_id = ?";
+					 ps = connection.prepareStatement(query);
+					 
+					 ps.setString(1, item.getLogin());
+					 ps.setString(2, item.getPassword());
+					 ps.setInt(3, id);
+					 
+					 int row = ps.executeUpdate();
+	
+					// rows affected
+					 if(row  == 1) {
+						  System.out.println("ligne modifiée: "+id);
+					 }
+					
+				 } catch (SQLException ex) {
+				     // handle any errors
+				     System.out.println("SQLException: " + ex.getMessage());
+				     System.out.println("SQLState: " + ex.getSQLState());
+				     System.out.println("VendorError: " + ex.getErrorCode());
+				 }
+				 finally {
+				    // it is a good idea to release
+				    // resources in a finally{} block
+				    // in reverse-order of their creation
+				    // if they are no-longer needed
+
+				    if (rs != null) {
+				        try {
+				            rs.close();
+				        } catch (SQLException sqlEx) { } // ignore
+
+				        rs = null;
+				    }
+
+				    if (ps != null) {
+				        try {
+				            ps.close();
+				        } catch (SQLException sqlEx) { } // ignore
+
+				        ps = null;
+				    }
+				}
+				break;
+			}
+			idx++;
+		}
+		return id;
 	}
 
 	@Override
 	public void showItem(int id) {
-		// TODO Auto-generated method stub
+		try {
+			 String query = "SELECT * FROM admin "
+						+" WHERE admin_id = ?";
+			 ps = connection.prepareStatement(query);
+			 ps.setInt(1, id);
+			 
+			 rs = ps.executeQuery();
+			 ResultSetMetaData metaData  = rs.getMetaData();
+			 int columsNb = metaData.getColumnCount();
+			 showColumnNames(metaData, columsNb);
+			 
+			 
+			 while(rs.next()){
+				 for (int i = 1;i<=columsNb;i++) {
+		        	  if(i>1) {
+		        		  System.out.print("|");
+		        		
+		        	  }
+		        	  Object value = rs.getObject(i);
+		        	  System.out.print(value);
+		          }
+		            System.out.println("");
+		            
+	        }
+			
+		 } catch (SQLException ex) {
+		     // handle any errors
+		     System.out.println("SQLException: " + ex.getMessage());
+		     System.out.println("SQLState: " + ex.getSQLState());
+		     System.out.println("VendorError: " + ex.getErrorCode());
+		 }
+		 finally {
+		    if (rs != null) {
+		        try {
+		            rs.close();
+		        } catch (SQLException sqlEx) { } // ignore
+
+		        rs = null;
+		    }
+
+		    if (ps != null) {
+		        try {
+		            ps.close();
+		        } catch (SQLException sqlEx) { } // ignore
+
+		        ps = null;
+		    }
+		}
 		
 	}
 

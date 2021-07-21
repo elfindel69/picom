@@ -33,12 +33,13 @@ public class AdConsole {
 			case 2:
 				Advertisment ad = new Advertisment();
 				try {
-					ad = addAdd(sc, ad, areaService, timeSlotService,true);
+					ad = addAdd(sc, ad, areaService, timeSlotService);
 				}catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
+				ad.setClientID(client.getId());
 				client.addAd(ad);
-				adService.addItem(ad);
+				adService.createItem(ad);
 				break;
 			case 3:
 				adService.showItems();
@@ -53,7 +54,7 @@ public class AdConsole {
 				
 				Advertisment ad2 = adService.getItem(id);
 				try {
-					ad2 = addAdd(sc, ad2, areaService, timeSlotService,false);
+					ad2 = addAdd(sc, ad2, areaService, timeSlotService);
 				}catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
@@ -83,12 +84,7 @@ public class AdConsole {
 	}
 
 	private static Advertisment addAdd(Scanner sc, Advertisment ad, Service<Area> areaService,
-			Service<TimeSlot> timeSlotService, boolean create) {
-		if(create) {
-			System.out.println("saisir un id:");
-			int id = Integer.parseInt(sc.nextLine());
-			ad.setId(id);
-		}
+			Service<TimeSlot> timeSlotService) {
 		
 		System.out.println("saisir un titre:");
 		String title = sc.nextLine();

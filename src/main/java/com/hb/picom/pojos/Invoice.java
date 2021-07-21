@@ -4,12 +4,12 @@ import java.time.LocalDateTime;
 
 public class Invoice {
 	private int id;
-	private LocalDateTime invoiceDate;
-	private String companyString;
+	private LocalDateTime invoiceDate =LocalDateTime.now();
+	private String companyName;
 	private String companySIRET;
 	private String companyAddress;
 	private double grossPrice;
-	private double vATPrice;
+	private double vatPrice;
 	private double netPrice;
 	
 	public int getId() {
@@ -24,11 +24,11 @@ public class Invoice {
 	public void setInvoiceDate(LocalDateTime invoiceDate) {
 		this.invoiceDate = invoiceDate;
 	}
-	public String getCompanyString() {
-		return companyString;
+	public String getCompanyName() {
+		return companyName;
 	}
-	public void setCompanyString(String companyString) {
-		this.companyString = companyString;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 	public String getCompanySIRET() {
 		return companySIRET;
@@ -48,11 +48,11 @@ public class Invoice {
 	public void setGrossPrice(double grossPrice) {
 		this.grossPrice = grossPrice;
 	}
-	public double getvATPrice() {
-		return vATPrice;
+	public double getVATPrice() {
+		return vatPrice;
 	}
-	public void setvATPrice(double vATPrice) {
-		this.vATPrice = vATPrice;
+	public void setVATPrice(double vatPrice) {
+		this.vatPrice = vatPrice;
 	}
 	public double getNetPrice() {
 		return netPrice;
@@ -66,22 +66,22 @@ public class Invoice {
 	}
 	
 	public Invoice(int id, LocalDateTime invoiceDate, String companyString, String companySIRET, String companyAddress,
-			double grossPrice, double vATPrice, double netPrice) {
+			double grossPrice, double vatPrice, double netPrice) {
 		this.id = id;
 		this.invoiceDate = invoiceDate;
-		this.companyString = companyString;
+		this.companyName = companyString;
 		this.companySIRET = companySIRET;
 		this.companyAddress = companyAddress;
 		this.grossPrice = grossPrice;
-		this.vATPrice = vATPrice;
+		this.vatPrice = vatPrice;
 		this.netPrice = netPrice;
 	}
 	
 	@Override
 	public String toString() {
-		return "Invoice [id=" + id + ", invoiceDate=" + invoiceDate + ", companyString=" + companyString
+		return "Invoice [id=" + id + ", invoiceDate=" + invoiceDate + ", companyString=" + companyName
 				+ ", companySIRET=" + companySIRET + ", companyAddress=" + companyAddress + ", grossPrice=" + grossPrice
-				+ ", vATPrice=" + vATPrice + ", netPrice=" + netPrice + "]";
+				+ ", vATPrice=" + vatPrice + ", netPrice=" + netPrice + "]";
 	}
 	
 	

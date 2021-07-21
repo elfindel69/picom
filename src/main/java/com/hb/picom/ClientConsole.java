@@ -31,11 +31,11 @@ public class ClientConsole {
 			case 2:
 				Client client = new Client();
 				try {
-					client = addClient(sc, cities, client,true);
+					client = addClient(sc, cities, client);
 				}catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
-				clients.addItem(client);
+				clients.createItem(client);
 				break;
 			case 3:
 				clients.showItems();
@@ -50,7 +50,7 @@ public class ClientConsole {
 				
 				Client client2 = clients.getItem(id);
 				try {
-					client2 = addClient(sc, cities, client2,false);
+					client2 = addClient(sc, cities, client2);
 				}catch (Exception e) {
 					System.err.println(e.getMessage());
 				}
@@ -78,13 +78,7 @@ public class ClientConsole {
 		
 	}
 
-	private static Client addClient(Scanner sc, Service<City> cities, Client client, boolean create) {
-		if(create){
-			System.out.println("saisir un id: ");
-			int id = 0;
-			id = Integer.parseInt(sc.nextLine());
-			client.setId(id);
-		}
+	private static Client addClient(Scanner sc, Service<City> cities, Client client) {
 		
 		System.out.println("saisir un prenom: ");
 		String fistName  = sc.nextLine();

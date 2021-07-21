@@ -79,8 +79,8 @@ public class AdminConsole {
 			break;
 		}
 		case 2: {
-			TimeSlot timeSlot = addTimeSlot(sc, new TimeSlot(),true);
-			timeSlots.addItem(timeSlot);
+			TimeSlot timeSlot = addTimeSlot(sc, new TimeSlot());
+			timeSlots.createItem(timeSlot);
 			break;
 		}
 		case 3: {
@@ -95,7 +95,7 @@ public class AdminConsole {
 			}
 			
 			TimeSlot timeSlot = timeSlots.getItem(id);
-			timeSlot = addTimeSlot(sc, timeSlot,false);
+			timeSlot = addTimeSlot(sc, timeSlot);
 			timeSlots.updateItem(id, timeSlot);
 			break;
 		}
@@ -119,13 +119,7 @@ public class AdminConsole {
 		
 	}
 
-	private static TimeSlot addTimeSlot(Scanner sc, TimeSlot timeSlot, boolean create) {
-		if(create) {
-			System.out.println("entrer un id: ");
-			int id = Integer.parseInt(sc.nextLine());
-			timeSlot.setId(id);	
-		}
-		
+	private static TimeSlot addTimeSlot(Scanner sc, TimeSlot timeSlot) {
 		System.out.println("entrer une heure de début: ");
 		LocalTime startTime = LocalTime.parse(sc.nextLine());
 		timeSlot.setStartTime(startTime);
@@ -163,9 +157,10 @@ public class AdminConsole {
 			}
 			
 			Area area = areas.getItem(id);
-			BusStop busStop = addBusStop(sc, new BusStop(),true);
+			BusStop busStop = addBusStop(sc, new BusStop());
+			busStop.setAreaId(id);
 			area.addBusStop(busStop);
-			busStops.addItem(busStop);
+			busStops.createItem(busStop);
 			break;
 		}
 		case 3: {
@@ -190,7 +185,7 @@ public class AdminConsole {
 			}
 			
 			BusStop busStop = busStops.getItem(id);
-			busStop = addBusStop(sc, busStop,false);
+			busStop = addBusStop(sc, busStop);
 			area.setBusStop(id, busStop);
 			busStops.updateItem(id, busStop);
 			break;
@@ -224,19 +219,13 @@ public class AdminConsole {
 		
 	}
 
-	private static BusStop addBusStop(Scanner sc, BusStop busStop, boolean create) {
-		if(create) {
-			System.out.println("entrer un id: ");
-			int id = Integer.parseInt(sc.nextLine());
-			busStop.setId(id);	
-		}
-		
+	private static BusStop addBusStop(Scanner sc, BusStop busStop) {
 		System.out.println("entrer un nom: ");
 		String name = sc.nextLine();
 		busStop.setName(name);
 		System.out.println("entrer une adresse IP: ");
 		String iPAddress = sc.nextLine();
-		busStop.setIPAdress(iPAddress);
+		busStop.setIPAddress(iPAddress);
 		System.out.println("entrer un point GPS: ");
 		String gps = sc.nextLine();
 		busStop.setGps(gps);
@@ -257,8 +246,8 @@ public class AdminConsole {
 			break;
 		}
 		case 2: {
-			Area area = addArea(sc, new Area(),true);
-			areas.addItem(area);
+			Area area = addArea(sc, new Area());
+			areas.createItem(area);
 			break;
 		}
 		case 3: {
@@ -267,7 +256,7 @@ public class AdminConsole {
 			int id = Integer.parseInt(sc.nextLine());
 			
 			Area area = areas.getItem(id);
-			area = addArea(sc, area,false);
+			area = addArea(sc, area);
 			areas.updateItem(id, area);
 			break;
 		}
@@ -291,13 +280,7 @@ public class AdminConsole {
 		
 	}
 
-	private static Area addArea(Scanner sc, Area area, boolean create) {
-		if(create) {
-			System.out.println("entrer un id: ");
-			int id = Integer.parseInt(sc.nextLine());
-			area.setId(id);	
-		}
-		
+	private static Area addArea(Scanner sc, Area area) {
 		System.out.println("entrer un nom: ");
 		String name = sc.nextLine();
 		area.setName(name);

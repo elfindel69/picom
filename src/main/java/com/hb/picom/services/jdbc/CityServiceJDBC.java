@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.hb.picom.pojos.City;
 
@@ -55,7 +56,7 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 				 		+ "city_zip_code, "
 				 		+ "id_country)"
 				 		+ " VALUES(?,?,?)";
-				 ps = connection.prepareStatement(query);
+				 ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 				 
 				 ps.setString(1, item.getName());
 				 ps.setString(2, item.getZipCode());
@@ -64,12 +65,15 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 				 int row = ps.executeUpdate();
 				 
 				if(row == 1) {
-					stmt = connection.createStatement();
-					 rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-					 if(rs.next()) {
-						 createdRow = rs.getInt(1);
-						 System.out.println("ligne insérée: "+createdRow);
-					 }
+					try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+			            if (generatedKeys.next()) {
+			            	createdRow = generatedKeys.getInt(1);
+			            	item.setID(createdRow);
+			            }
+			            else {
+			                throw new SQLException("Creating user failed, no ID obtained.");
+			            }
+			        }
 					items.add(item);
 				   
 				}
@@ -210,7 +214,7 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 					 ps.setString(1, item.getName());
 					 ps.setString(2, item.getZipCode());
 					 ps.setInt(3, countryId);
-					 
+					 ps.setInt(4, id);
 					 int row = ps.executeUpdate();
 	
 					// rows affected
@@ -246,7 +250,7 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 				        ps = null;
 				    }
 				}
-				
+				break;
 			}
 			idx++;
 		}

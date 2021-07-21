@@ -2,6 +2,7 @@ package com.hb.picom.pojos;
 
 public class InvoiceItem {
 	private int id;
+	private int invoiceId;
 	private String name;
 	private double price;
 	private int quantity;
@@ -11,6 +12,13 @@ public class InvoiceItem {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getInvoiceId() {
+		return invoiceId;
+	}
+	public void setInvoiceId(int invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 	public String getName() {
 		return name;
@@ -43,7 +51,7 @@ public class InvoiceItem {
 	}
 	@Override
 	public String toString() {
-		return "InvoiceItem [id=" + id + ", name=" + name + ", price=" + price + ", quantity=" + quantity + "]";
+		return "InvoiceItem [id=" + id + ", invoice id=" + invoiceId + ", name=" + name + ", price=" + price + ", quantity=" + quantity + "]";
 	}
 	
 	

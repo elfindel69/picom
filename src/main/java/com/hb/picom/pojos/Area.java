@@ -65,12 +65,23 @@ public class Area {
 		}
 	}
 	public void setBusStop(int id, BusStop busStop) {
-		busStops.set(id, busStop);
+		for(BusStop item : busStops) {
+			if(item.getId() == id) {
+				busStops.set(id, busStop);
+				return;
+			}
+		}
+		
 		
 	}
-	public void deleteBusStop(int id) {
-		busStops.remove(id);
+	public void deleteBusStop(BusStop busStop) {
 		
+		for(BusStop item : busStops) {
+			if(item.getId() == busStop.getId()) {
+				busStops.remove(busStop);
+				return;
+			}
+		}
 	}
 	
 }

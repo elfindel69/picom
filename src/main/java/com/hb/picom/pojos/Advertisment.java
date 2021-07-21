@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Advertisment {
 	private int id;
+	private int clientId;
 	private String title;
 	private boolean isActive;
 	private String description;
@@ -27,6 +28,12 @@ public class Advertisment {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getClientID() {
+		return clientId;
+	}
+	public void setClientID(int clientId) {
+		this.clientId = clientId;
 	}
 	public String getTitle() {
 		return title;
@@ -103,6 +110,7 @@ public class Advertisment {
 		StringBuilder sb = new StringBuilder();
 		final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 		sb.append("id: "+id+",\n");
+		sb.append("client id: "+clientId+",\n");
 		sb.append("title: "+title+",\n");
 		
 		if(isActive) {

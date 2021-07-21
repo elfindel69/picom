@@ -2,6 +2,7 @@ package com.hb.picom.pojos;
 
 public class BusStop {
 	private int id;
+	private int areaId;
 	private String name;
 	private String iPAddress;
 	private String gps;
@@ -12,16 +13,23 @@ public class BusStop {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public int getAreaID() {
+		return areaId;
+	}
+	public void setAreaId(int areaId) {
+		this.areaId = areaId;
+	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getIPAdress() {
+	public String getIPAddress() {
 		return iPAddress;
 	}
-	public void setIPAdress(String iPAddress) {
+	public void setIPAddress(String iPAddress) {
 		this.iPAddress = iPAddress;
 	}
 	public String getGps() {
@@ -46,6 +54,7 @@ public class BusStop {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("id: "+id+",\n");
+		sb.append("area id: "+areaId+",\n");
 		sb.append("name: "+name+",\n");
 		sb.append("IP address:\n"+iPAddress+",\n");
 		sb.append("GPS: "+gps);

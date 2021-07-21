@@ -2,10 +2,11 @@ package com.hb.picom.pojos;
 
 public enum Country {
 	France,
-	Germany,
+	Allemagne,
 	Luxembourg,
-	Switzerland,
-	Italy,
-	Spain,
-	UK
+	Suisse,
+	Italie,
+	Espagne,
+	GrandeBretagne,
+	Belgique
 }

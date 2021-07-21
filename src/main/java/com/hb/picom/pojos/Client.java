@@ -187,11 +187,21 @@ public class Client {
 	}
 	
 	public void setAd(int idx, Advertisment ad) {
-		ads.set(idx, ad);
+		for(Advertisment item : ads) {
+			if(item.getId() == idx) {
+				ads.set(idx, ad);
+				return;
+			}
+		}
 	}
 	
-	public void deleteAd(int idx) {
-		ads.remove(idx);
+	public void deleteAd(Advertisment ad) {
+		for(Advertisment item : ads) {
+			if(item.getId() == ad.getId()) {
+				ads.remove(ad);
+				return;
+			}
+		}
 		
 	}
 	
