@@ -50,7 +50,7 @@ public class PiComMain {
 		    clients.showItems();
 		    
 		    //insertion client
-		    Client client = new Client(33, "Toto", "Delgado", "toto@delgado.fr", 
+		    Client client = new Client(38, "Toto", "Delgado", "toto@delgado.fr", 
 		    		"$2y$10$M09LY1dfH/Kg3t7ovtaOpOgDkRvfOtuQQ4VEQgxkSIM3QaRFHzxMi");
 		    client.setPhone("+33698785652");
 		    client.setCompanyName("Pomona");
