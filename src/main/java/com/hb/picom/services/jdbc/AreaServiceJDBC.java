@@ -128,16 +128,18 @@ public class AreaServiceJDBC extends ServiceJDBC<Area> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		Area itemArea = null;
+		int idx = 0;
 		for (Area area: items) {
 			if(area.getId() == id) {
 				itemArea = area;
 				break;
 			}
+			idx++;
 		}
 		if(itemArea != null) {
-			items.remove(itemArea);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM area WHERE area_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -180,7 +182,9 @@ public class AreaServiceJDBC extends ServiceJDBC<Area> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -200,7 +204,7 @@ public class AreaServiceJDBC extends ServiceJDBC<Area> {
 					 ps.setString(1, item.getName());
 					 ps.setDouble(2, item.getBasePrice());
 					
-					 ps.setInt(3, item.getId());
+					 ps.setInt(3, id);
 					 
 					 int row = ps.executeUpdate();
 

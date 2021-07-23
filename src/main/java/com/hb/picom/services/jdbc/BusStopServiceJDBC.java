@@ -135,16 +135,18 @@ public class BusStopServiceJDBC extends ServiceJDBC<BusStop> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		BusStop itemStop = null;
+		int idx = 0;
 		for (BusStop stop: items) {
 			if(stop.getId() == id) {
 				itemStop = stop;
 				break;
 			}
+			idx++;
 		}
 		if(itemStop != null) {
-			items.remove(itemStop);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM bus_stop WHERE bus_stop_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -187,7 +189,9 @@ public class BusStopServiceJDBC extends ServiceJDBC<BusStop> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -210,7 +214,7 @@ public class BusStopServiceJDBC extends ServiceJDBC<BusStop> {
 					 ps.setString(2, item.getName());
 					 ps.setString(3, item.getIPAddress());
 					 ps.setString(4, item.getGps());
-					 ps.setInt(5, item.getId());
+					 ps.setInt(5, id);
 					 
 					 int row = ps.executeUpdate();
 

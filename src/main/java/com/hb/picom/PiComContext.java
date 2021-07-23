@@ -14,13 +14,23 @@ public class PiComContext {
 	
 	public static PiComContext getInstance() {
 		if(instance == null) {
-			instance = createInstance();
+			
+			synchronized(PiComContext.class) {
+				instance = createInstance();
+			}
+		
 		}
 		return instance;
 	}
 	
-	private synchronized static PiComContext createInstance() {
+	private static PiComContext createInstance() {
 		if (instance == null ) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			InputStream aInputStream = PiComMain.class.getResourceAsStream("/env/app.env");
 			env = new Properties();
 			

@@ -195,10 +195,10 @@ public class Client {
 		}
 	}
 	
-	public void deleteAd(Advertisment ad) {
+	public void deleteAd(int id) {
 		for(Advertisment item : ads) {
-			if(item.getId() == ad.getId()) {
-				ads.remove(ad);
+			if(item.getId() == id) {
+				ads.remove(item);
 				return;
 			}
 		}

@@ -153,16 +153,18 @@ public class AdServiceJDBC extends ServiceJDBC<Advertisment> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		Advertisment itemAd = null;
+		int idx = 0;
 		for (Advertisment ad: items) {
 			if(ad.getId() == id) {
 				itemAd = ad;
 				break;
 			}
+			idx++;
 		}
 		if(itemAd != null) {
-			items.remove(itemAd);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM advertisment WHERE ad_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -205,7 +207,9 @@ public class AdServiceJDBC extends ServiceJDBC<Advertisment> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -236,7 +240,7 @@ public class AdServiceJDBC extends ServiceJDBC<Advertisment> {
 					 ps.setString(6, item.getHtmlText());
 					 ps.setTimestamp(7, Timestamp.valueOf(item.getStartDate()));
 					 ps.setTimestamp(8, Timestamp.valueOf(item.getEndDate()));
-					 ps.setInt(9, item.getId());
+					 ps.setInt(9, id);
 					 
 					 int row = ps.executeUpdate();
 

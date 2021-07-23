@@ -20,12 +20,14 @@ public class AreaServiceImpl extends ServiceImpl<Area> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (Area area : items) {
 			if(area.getId() == id) {
 				items.remove(area);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 

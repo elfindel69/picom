@@ -12,7 +12,7 @@ public interface Service<T> {
 	
 	public void addItem(T item);
 	
-	public void deleteItem(int id);
+	public boolean deleteItem(int id);
 	
 	public int updateItem(int id, T item) ;
 

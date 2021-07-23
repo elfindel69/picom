@@ -20,13 +20,14 @@ public class BusStopServiceImpl extends ServiceImpl<BusStop> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (BusStop busStop : items) {
 			if(busStop.getId() == id) {
 				items.remove(busStop);
+				return true;
 			}
 		}
-		
+		return false;
 	}
 	
 	@Override

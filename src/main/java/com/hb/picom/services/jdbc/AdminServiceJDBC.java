@@ -125,16 +125,18 @@ public class AdminServiceJDBC extends ServiceJDBC<Admin> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		Admin itemAdmin = null;
+		int idx = 0;
 		for (Admin admin: items) {
 			if(admin.getId() == id) {
 				itemAdmin = admin;
 				break;
 			}
+			idx++;
 		}
 		if(itemAdmin != null) {
-			items.remove(itemAdmin);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM admin WHERE admin_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -172,7 +174,9 @@ public class AdminServiceJDBC extends ServiceJDBC<Admin> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 

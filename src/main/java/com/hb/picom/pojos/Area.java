@@ -74,11 +74,11 @@ public class Area {
 		
 		
 	}
-	public void deleteBusStop(BusStop busStop) {
+	public void deleteBusStop(int id) {
 		
 		for(BusStop item : busStops) {
-			if(item.getId() == busStop.getId()) {
-				busStops.remove(busStop);
+			if(item.getId() == id) {
+				busStops.remove(item);
 				return;
 			}
 		}

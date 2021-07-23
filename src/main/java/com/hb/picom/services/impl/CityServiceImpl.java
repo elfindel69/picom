@@ -20,13 +20,14 @@ public class CityServiceImpl extends ServiceImpl<City> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (City city : items) {
 			if(city.getId() == id) {
 				items.remove(city);
 			}
+			return true;
 		}
-		
+		return false;
 	}
 
 	@Override

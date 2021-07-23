@@ -144,16 +144,18 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		City itemCity = null;
+		int idx = 0;
 		for (City city: items) {
 			if(city.getId() == id) {
 				itemCity = city;
 				break;
 			}
+			idx++;
 		}
 		if(itemCity != null) {
-			items.remove(itemCity);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM city WHERE city_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -191,7 +193,9 @@ public class CityServiceJDBC extends ServiceJDBC<City> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 

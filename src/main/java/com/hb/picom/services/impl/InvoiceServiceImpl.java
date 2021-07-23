@@ -21,13 +21,14 @@ public class InvoiceServiceImpl extends ServiceImpl<Invoice> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (Invoice invoice: items) {
 			if(invoice.getId() == id) {
 				items.remove(invoice);
+				return true;
 			}
 		}
-		
+		return true;
 	}
 	
 	@Override

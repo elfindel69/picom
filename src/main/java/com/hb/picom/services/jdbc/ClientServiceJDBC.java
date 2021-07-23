@@ -184,16 +184,18 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		Client itemClient = null;
+		int idx = 0;
 		for (Client client: items) {
 			if(client.getId() == id) {
 				itemClient = client;
 				break;
 			}
+			idx++;
 		}
 		if(itemClient != null) {
-			items.remove(itemClient);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM client WHERE client_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -236,7 +238,9 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	@Override
@@ -264,7 +268,7 @@ public class ClientServiceJDBC extends ServiceJDBC<Client> {
 					 ps.setString(5, item.getCompanyName());
 					 ps.setString(6, item.getCompanyAddress());
 					 ps.setInt(7, item.getCompanyCity().getId());
-					 ps.setInt(8, item.getId());
+					 ps.setInt(8, id);
 					 
 					 int row = ps.executeUpdate();
 

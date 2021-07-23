@@ -126,16 +126,18 @@ public class AdTimeSlotServiceJDBC extends ServiceJDBC<AdTimeSlot> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		AdTimeSlot adTSItem = null;
+		int idx = 0;
 		for (AdTimeSlot adTS: items) {
 			if(adTS.getId() == id) {
 				adTSItem = adTS;
 				break;
 			}
+			idx++;
 		}
 		if(adTSItem != null) {
-			items.remove(adTSItem);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM ad_time_slot WHERE ad_time_slot_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -178,7 +180,9 @@ public class AdTimeSlotServiceJDBC extends ServiceJDBC<AdTimeSlot> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -191,13 +195,14 @@ public class AdTimeSlotServiceJDBC extends ServiceJDBC<AdTimeSlot> {
 				try {
 					 String query = "UPDATE ad_time_slot SET"
 					 		+ " id_time_slot = ?,"
-					 		+ " id_ad = ?";
+					 		+ " id_ad = ?"
+					 		+ " WHERE ad_time_slot_id = ?";
 					 ps = connection.prepareStatement(query);
 					 
 					 ps.setInt(1, item.getTimeSlotId());
 					 ps.setInt(2, item.getAdId());
 					 
-					 ps.setInt(3, item.getId());
+					 ps.setInt(3, id);
 					 
 					 int row = ps.executeUpdate();
 

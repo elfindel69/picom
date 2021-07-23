@@ -21,12 +21,14 @@ public class AdminServiceImpl extends ServiceImpl<Admin> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (Admin advertisment : items) {
 			if(advertisment.getId() == id) {
 				items.remove(advertisment);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 

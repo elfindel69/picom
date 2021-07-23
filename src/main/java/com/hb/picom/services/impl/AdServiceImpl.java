@@ -20,12 +20,14 @@ public class AdServiceImpl extends ServiceImpl<Advertisment> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (Advertisment advertisment : items) {
 			if(advertisment.getId() == id) {
 				items.remove(advertisment);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 

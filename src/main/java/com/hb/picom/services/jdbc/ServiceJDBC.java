@@ -40,7 +40,7 @@ public abstract class ServiceJDBC<T> implements Service<T> {
 		items.add(item);
 	}
 	
-	public abstract void deleteItem(int id) ;
+	public abstract boolean deleteItem(int id) ;
 	
 	public abstract int updateItem(int id, T item) ;
 	

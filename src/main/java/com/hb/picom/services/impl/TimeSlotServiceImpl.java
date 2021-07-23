@@ -21,12 +21,14 @@ public class TimeSlotServiceImpl extends ServiceImpl<TimeSlot> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (TimeSlot timeSlot: items) {
 			if(timeSlot.getId() == id) {
 				items.remove(timeSlot);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 	

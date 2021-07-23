@@ -126,16 +126,18 @@ public class AdAreaServiceJDBC extends ServiceJDBC<AdArea> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		AdArea adAreaItem = null;
+		int idx=0;
 		for (AdArea adArea: items) {
 			if(adArea.getId() == id) {
 				adAreaItem = adArea;
 				break;
 			}
+			idx++;
 		}
 		if(adAreaItem != null) {
-			items.remove(adAreaItem);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM ad_area WHERE ad_area_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -178,7 +180,9 @@ public class AdAreaServiceJDBC extends ServiceJDBC<AdArea> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -191,13 +195,14 @@ public class AdAreaServiceJDBC extends ServiceJDBC<AdArea> {
 				try {
 					 String query = "UPDATE ad_area SET"
 					 		+ " id_ad = ?,"
-					 		+ " id_area = ?";
+					 		+ " id_area = ?"
+					 		+ " WHERE ad_area_id = ?";
 					 ps = connection.prepareStatement(query);
 					 
 					 ps.setInt(1, item.getAdId());
 					 ps.setInt(2, item.getAreaId());
 					 
-					 ps.setInt(3, item.getId());
+					 ps.setInt(3, id);
 					 
 					 int row = ps.executeUpdate();
 

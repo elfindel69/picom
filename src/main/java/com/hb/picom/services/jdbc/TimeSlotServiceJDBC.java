@@ -132,16 +132,18 @@ public class TimeSlotServiceJDBC extends ServiceJDBC<TimeSlot> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		TimeSlot itemTS= null;
+		int idx = 0;
 		for (TimeSlot timeSlot: items) {
 			if(timeSlot.getId() == id) {
 				itemTS = timeSlot;
 				break;
 			}
+			idx++;
 		}
 		if(itemTS != null) {
-			items.remove(itemTS);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM time_slot WHERE time_slot_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -184,7 +186,9 @@ public class TimeSlotServiceJDBC extends ServiceJDBC<TimeSlot> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -199,14 +203,14 @@ public class TimeSlotServiceJDBC extends ServiceJDBC<TimeSlot> {
 					 		+ " time_slot_start_time = ?,"
 					 		+ " time_slot_end_time = ?,"
 					 		+ " time_slot_price = ?"
-					 		+ " WHERE area_id = ?";
+					 		+ " WHERE time_slot_id = ?";
 					 ps = connection.prepareStatement(query);
 					 
 					 ps.setTime(1, Time.valueOf(item.getStartTime()));
 					 ps.setTime(1, Time.valueOf(item.getEndTime()));
 					 ps.setDouble(3, item.getPrice());
 					
-					 ps.setInt(3, item.getId());
+					 ps.setInt(3, id);
 					 
 					 int row = ps.executeUpdate();
 

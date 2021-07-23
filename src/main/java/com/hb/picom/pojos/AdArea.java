@@ -33,4 +33,14 @@ public class AdArea {
 		this.adId = adId;
 		this.areaId = areaId;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		AdArea adArea2 = (AdArea)o;
+		
+		boolean testAreaId = (this.areaId == adArea2.getAreaId());
+		boolean testAdId = (this.adId == adArea2.getAdId());
+		
+		return testAreaId && testAdId;
+	}
 }

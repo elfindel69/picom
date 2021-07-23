@@ -133,16 +133,19 @@ public class InvoiceItemServiceJDBC extends ServiceJDBC<InvoiceItem> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		InvoiceItem itemInvoice = null;
+		int idx=0;
 		for (InvoiceItem item: items) {
 			if(item.getId() == id) {
 				itemInvoice = item;
 				break;
+				
 			}
+			idx++;
 		}
 		if(itemInvoice != null) {
-			items.remove(itemInvoice);
+			items.remove(idx);
 			try {
 				 String query = "DELETE FROM invoice_item WHERE invoice_item_id = ?";
 				 ps = connection.prepareStatement(query);
@@ -185,7 +188,9 @@ public class InvoiceItemServiceJDBC extends ServiceJDBC<InvoiceItem> {
 			        ps = null;
 			    }
 			}
+			return true;
 		}
+		return false;
 		
 	}
 
@@ -201,7 +206,7 @@ public class InvoiceItemServiceJDBC extends ServiceJDBC<InvoiceItem> {
 					 		+ " invoice_item_name = ?,"
 					 		+ " invoice_item_price = ?,"
 					 		+ " invoice_item_quantity = ?"
-					 		+ " WHERE bus_stop_id = ?";
+					 		+ " WHERE invoice_item_id = ?";
 					 ps = connection.prepareStatement(query);
 					 
 					 ps.setInt(1, item.getInvoiceId());
@@ -209,7 +214,7 @@ public class InvoiceItemServiceJDBC extends ServiceJDBC<InvoiceItem> {
 					 ps.setDouble(3, item.getPrice());
 					 ps.setInt(4, item.getQuantity());
 					 
-					 ps.setInt(5, item.getId());
+					 ps.setInt(5, id);
 					 
 					 int row = ps.executeUpdate();
 

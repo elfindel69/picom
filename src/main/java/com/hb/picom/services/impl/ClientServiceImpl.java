@@ -21,12 +21,14 @@ public class ClientServiceImpl extends ServiceImpl<Client> {
 	}
 
 	@Override
-	public void deleteItem(int id) {
+	public boolean deleteItem(int id) {
 		for (Client client: items) {
 			if(client.getId() == id) {
 				items.remove(client);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 	

@@ -20,7 +20,7 @@ public abstract class ServiceImpl<T> implements Service<T> {
 		items.add(item);
 	}
 	
-	public abstract void deleteItem(int id) ;
+	public abstract boolean deleteItem(int id) ;
 	
 	public int updateItem(int id, T item) {
 		items.set(id, item);
