@@ -71,6 +71,7 @@ public class AdConsole {
 					System.err.println(e.getMessage());
 					break;
 				}
+				
 				client.deleteAd(id2);
 				adService.deleteItem(id2);
 				break;
